@@ -19,6 +19,8 @@ public class Con4Game {
     private int[][] gameArray; // array that indicated whcih palyers tokens 
     // are in which column
     private int currentPlayer;
+    private int dimensions;
+    private Connect4GameBoardDisplay size;
 
     Con4Game(int r, int c)
     {
@@ -75,6 +77,5 @@ public class Con4Game {
     public void setGameArray(int[][] gameArray) {
         this.gameArray = gameArray;
     }
-
 
 }

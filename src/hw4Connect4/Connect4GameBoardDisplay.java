@@ -34,13 +34,9 @@ public class Connect4GameBoardDisplay extends JPanel{
     {
         dimensions = d;
         colors = new Color[2];
-        colors[0] = Color.RED;
+        colors[0] = Color.BLACK;
         colors[1] = Color.BLACK;
         font = new Font("Arial", Font.BOLD, 8);
-
-        chColors = new Color[2];
-        chColors[0] = new Color(200,0, 33);
-        chColors[1] = new Color(100,100,100);
 
         width = dimensions * cellWidth;
         height = dimensions *  cellWidth;
@@ -90,7 +86,7 @@ public class Connect4GameBoardDisplay extends JPanel{
     public void pieceMoved(MouseEvent me)
     {
         selectedCell = calculteRowCol(me.getX(), me.getY());
-        game.setGameArray(selectedCell[0][1]);
+        game.makeMove(selectedCell[0]);
         repaint();
     }
 
@@ -122,6 +118,8 @@ public class Connect4GameBoardDisplay extends JPanel{
                 count ++;
                 g.setColor(colors[count%2]);
                 g.fillRect(cellWidth*col, cellWidth*row, cellWidth, cellWidth);
+                g.setColor(Color.white);
+                g.drawRect(cellWidth*col, cellWidth*row, cellWidth, cellWidth);
             }
         }
 
@@ -132,34 +130,13 @@ public class Connect4GameBoardDisplay extends JPanel{
             int count = 0;
             for(int col = 0; col < dimensions; col++)
             {
-                conTok = game.getToken(row, col);
-                if(conTok != null)
+                if(game.getGameArray()[row][col] == -1)
+                    continue;
+                else
                 {
-                    //g.setColor(chColors[(curTok.getPlayer()+1)%2]);
-                    g.setColor(chColors[Con4Game.getCurrentPlayer()]);
+                    g.setColor(colors[game.getCurrentPlayer()]);
                     g.fillOval(cellWidth*col+offset, cellWidth*row+2*offset, cellWidth-(2*offset), cellWidth-(4*offset));
 
-                    g.setColor(colors[1]);
-                    g.drawOval(cellWidth*col+offset, cellWidth*row+2*offset, cellWidth-(2*offset), cellWidth-(4*offset));
-
-                    g.setColor(chColors[Con4Game.getCurrentPlayer()]);
-                    g.fillOval(cellWidth*col+offset, cellWidth*row+offset, cellWidth-(2*offset), cellWidth-(4*offset));
-
-                    g.setColor(colors[1]);
-                    g.drawOval(cellWidth*col+offset, cellWidth*row+offset, cellWidth-(2*offset), cellWidth-(4*offset));
-                    if( Con4Game.getToken() == 'K')
-                    {
-                        g.setColor(chColors[Con4Game.getCurrentPlayer()]);
-                        g.fillOval(cellWidth*col+offset, cellWidth*row, cellWidth-(2*offset), cellWidth-(4*offset));
-
-                        g.setColor(colors[1]);
-                        g.drawOval(cellWidth*col+offset, cellWidth*row, cellWidth-(2*offset), cellWidth-(4*offset));
-                        g.drawString(""+Con4Game.getToken,cellWidth*col+titleOffSet, cellWidth*row+3*offset);
-                    }
-                    else
-                    {
-                        g.drawString(""+Con4Game.getGameArray,cellWidth*col+titleOffSet, cellWidth*row+3*offset);
-                    }
                 }
             }
         }

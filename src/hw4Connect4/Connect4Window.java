@@ -1,15 +1,20 @@
 package hw4Connect4;
 
 import javax.swing.*;
+import java.awt.event.*;
 import java.awt.*;
-import java.awt.event.MouseEvent;
 
 /**
  * Created by Reiley Hillman on 4/10/2017.
+ * Used CheckersWindow
  */
-public class Connect4Window {
+public class Connect4Window extends JFrame{
 
     int titleBarHeight = 20;
+    private int win_width = 400;
+    private int win_height = 300;
+    int c = 8;
+    private Connect4GameBoardDisplay panel;
     Con4Game board;
     JTextField rowCountTxt;
 
@@ -19,55 +24,22 @@ public class Connect4Window {
     public Connect4Window()
     {
         this.setTitle("Connect 4");
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
         board = new Con4Game(4,4);
-        int width = board.getSize().width;
-        int height = board.getSize().height+titleBarHeight+80;
-        this.setSize(width,height);
-        this.add(board, BorderLayout.CENTER);
-        initButs();
+        this.setSize(win_width,win_height);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        initWind();
         this.setVisible(true);
     }
 
     /**
      * initializes the components under the game board.
      */
-    public void initButs()
+    public void initWind()
     {
-        JPanel butPan = new JPanel(new GridLayout(2,1));
-        JPanel topPan = new JPanel();
-        JPanel botPan = new JPanel();
-
-        butPan.add(topPan);
-        butPan.add(botPan);
-
-        JLabel rowCountLab = new JLabel("cells per side: ");
-        topPan.add(rowCountLab);
-        rowCountTxt = new JTextField("8");
-        topPan.add(rowCountTxt);
-        JButton rowCountBut = new JButton("Set new row-columns");
-        botPan.add(rowCountBut);
-
-        rowCountBut.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent me) {
-                rowButClicked(me);
-            }
-        });
-
-        this.add(butPan, BorderLayout.SOUTH);
+        panel = new Connect4GameBoardDisplay(8);
+        this.add(panel, BorderLayout.CENTER);
     }
 
-    /**
-     * action to be performed if button is clicked to change the number of rows
-     * on game board
-     * @param me
-     */
-    public void rowButClicked(MouseEvent me)
-    {
-        board.setDimensions(Integer.parseInt(rowCountTxt.getText()));
-
-    };
 
     /**
      *  main method
