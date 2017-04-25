@@ -16,11 +16,12 @@ public class Con4Game {
 
     private int rows;
     private int cols;
-    private int[][] gameArray; // array that indicated whcih palyers tokens 
+    private int[][] gameArray; // array that indicated which players tokens
     // are in which column
     private int currentPlayer;
     private int dimensions;
     private Connect4GameBoardDisplay size;
+
 
     Con4Game(int r, int c)
     {
@@ -47,6 +48,42 @@ public class Con4Game {
         }
         nextPlayer();
     }
+
+    public boolean checkforWin(int player){
+
+        // horizontalCheck
+        for (int j = 0; j<cols; j++ ){
+            for (int i = 0; i<rows; i++){
+                if (this.gameArray[i][j] == player && this.gameArray[i][j+1] == player && this.gameArray[i][j+2] == player && this.gameArray[i][j+3] == player){
+                    return true;
+                }
+            }
+        }
+        // verticalCheck
+        for (int i = 0; i<cols; i++ ){
+            for (int j = 0; j<this.rows; j++){
+                if (this.gameArray[i][j] == player && this.gameArray[i+1][j] == player && this.gameArray[i+2][j] == player && this.gameArray[i+3][j] == player){
+                    return true;
+                }
+            }
+        }
+        // ascendingDiagonalCheck
+        for (int i=3; i<rows; i++){
+            for (int j=0; j<cols-3; j++){
+                if (this.gameArray[i][j] == player && this.gameArray[i-1][j+1] == player && this.gameArray[i-2][j+2] == player && this.gameArray[i-3][j+3] == player)
+                    return true;
+            }
+        }
+        // descendingDiagonalCheck
+        for (int i=3; i<rows; i++){
+            for (int j=3; j<cols; j++){
+                if (this.gameArray[i][j] == player && this.gameArray[i-1][j-1] == player && this.gameArray[i-2][j-2] == player && this.gameArray[i-3][j-3] == player)
+                    return true;
+            }
+        }
+        return false;
+    }
+
 
 
     public int getToken(int r, int c)

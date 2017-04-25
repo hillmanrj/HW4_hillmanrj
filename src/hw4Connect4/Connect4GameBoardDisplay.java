@@ -23,12 +23,16 @@ public class Connect4GameBoardDisplay extends JPanel{
     private int dimensions;//number of rows and col
     int width;
     int height;
-    Color[] colors, chColors;
+    Color[] colors;
     Con4Game game;
     int offset = 5;
     int titleOffSet = 17;
     int [] selectedCell;
     Font font;
+    int player;
+    String playerName;
+    String Player1Name = "Test";
+    String Player2Name = "Test2";
 
     public Connect4GameBoardDisplay(int d)
     {
@@ -60,11 +64,10 @@ public class Connect4GameBoardDisplay extends JPanel{
      * @param y
      * @return
      */
-    public int[] calculteRowCol(int x, int y)
+    public int[] calculateRowCol(int x, int y)
     {
         int col = (x - x%cellWidth)/cellWidth;
-        int row = (y - y%cellWidth)/cellWidth;
-        int[] coor = { row, col};
+        int[] coor = {0, col};
         return coor;
     }
 
@@ -74,8 +77,8 @@ public class Connect4GameBoardDisplay extends JPanel{
      */
     public void pieceSelected(MouseEvent me)
     {
-        selectedCell = calculteRowCol(me.getX(), me.getY());
-        game.getToken(selectedCell[0], selectedCell[1]);
+        selectedCell = calculateRowCol(me.getX(), me.getY());
+        game.getToken(0, selectedCell[1]);
 
     }
 
@@ -85,8 +88,8 @@ public class Connect4GameBoardDisplay extends JPanel{
      */
     public void pieceMoved(MouseEvent me)
     {
-        selectedCell = calculteRowCol(me.getX(), me.getY());
-        game.makeMove(selectedCell[0]);
+        selectedCell = calculateRowCol(me.getX(), dimensions - 1 );
+        game.makeMove(selectedCell[1]);
         repaint();
     }
 
@@ -108,35 +111,45 @@ public class Connect4GameBoardDisplay extends JPanel{
         super.paintComponent(g);
 
         // drawing board
-        for(int row = 0; row < dimensions; row++)
-        {
+        for (int row = 0; row < dimensions; row++) {
             int count = 0;
-            for(int col = 0; col < dimensions; col++)
-            {
-                if(row%2==0 && col==0)
-                    count =1;
-                count ++;
-                g.setColor(colors[count%2]);
-                g.fillRect(cellWidth*col, cellWidth*row, cellWidth, cellWidth);
+            for (int col = 0; col < dimensions; col++) {
+                g.setColor(colors[count % 2]);
+                g.fillRect(cellWidth * col, cellWidth * row, cellWidth, cellWidth);
                 g.setColor(Color.white);
-                g.drawRect(cellWidth*col, cellWidth*row, cellWidth, cellWidth);
+                g.drawLine(cellWidth * col, cellWidth * row, cellWidth * col, (cellWidth * row) + cellWidth);
             }
         }
 
         //drawing tokens
-        g.setFont(font);
-        for(int row = 0; row < dimensions; row++)
-        {
-            int count = 0;
-            for(int col = 0; col < dimensions; col++)
-            {
-                if(game.getGameArray()[row][col] == -1)
-                    continue;
-                else
-                {
-                    g.setColor(colors[game.getCurrentPlayer()]);
-                    g.fillOval(cellWidth*col+offset, cellWidth*row+2*offset, cellWidth-(2*offset), cellWidth-(4*offset));
+        for (int row = 0; row < dimensions; row++) {
+            for (int col = 0; col < dimensions; col++) {
+                if (game.getToken(row, col) == 0) {
+                    g.setColor(Color.red);
+                    g.fillOval(cellWidth * col, cellWidth * (7 - row), cellWidth, cellWidth);
+                    g.setColor(Color.black);
+                    g.drawOval(cellWidth * col, cellWidth * (7 - row), cellWidth, cellWidth);
 
+                if (game.checkforWin(player) == true && playerName.equals(Player2Name)) {
+                    g.setColor(Color.black);
+                    g.fillOval(cellWidth * col, cellWidth * (7 - row), cellWidth, cellWidth);
+                    g.setColor(Color.green);
+                    g.drawOval(cellWidth * col, cellWidth * (7 - row), cellWidth, cellWidth);
+
+                }
+                } else if (game.getToken(row, col) == 1) {
+                    g.setColor(Color.blue);
+                    g.fillOval(cellWidth * col, cellWidth * (7 - row), cellWidth, cellWidth);
+                    g.setColor(Color.black);
+                    g.drawOval(cellWidth * col, cellWidth * (7 - row), cellWidth, cellWidth);
+
+                    if (game.checkforWin(player) == true && playerName.equals(Player1Name)) {
+                        g.setColor(Color.black);
+                        g.fillOval(cellWidth * col, cellWidth * (7 - row), cellWidth, cellWidth);
+                        g.setColor(Color.orange);
+                        g.drawOval(cellWidth * col, cellWidth * (7 - row), cellWidth, cellWidth);
+
+                    }
                 }
             }
         }
