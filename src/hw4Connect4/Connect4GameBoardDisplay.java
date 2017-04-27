@@ -104,8 +104,7 @@ public class Connect4GameBoardDisplay extends JPanel{
         game = new Con4Game(width, height);
 
     }
-
-
+    
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
